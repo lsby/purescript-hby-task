@@ -1,4 +1,4 @@
-module Hby.Prmoise where
+module Hby.Task where
 
 import Prelude
 import Effect (Effect)
