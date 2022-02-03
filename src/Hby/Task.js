@@ -15,27 +15,35 @@ exports._bind = (task) => (fun) => {
   return () => task().then((a) => fun(a)());
 };
 
-exports.liftEff = (eff) => {
-  return (a) => {
-    return () => {
-      return new Promise((res, rej) => {
-        res(eff(a)());
-      });
-    };
-  };
+exports.liftEffect = (eff) => () => {
+  return new Promise((res, rej) => {
+    res(eff());
+  });
 };
 
 exports.runTask = (task) => (fun) => () => {
-  task().then(fun);
+  return task().then((a) => fun(a)());
 };
 exports.runTask_ = (task) => () => {
   task();
 };
 
-exports.delay = (n) => () => {
+exports._mempty = () => {
   return new Promise((res, rej) => {
-    setTimeout(() => {
-      res();
-    }, n);
+    res();
+  });
+};
+
+exports._alt = (t1) => (t2) => () => {
+  return new Promise((res, rej) => {
+    t1()
+      .then((a) => res(a))
+      .catch((_) => t2().then((a) => res(a)));
+  });
+};
+
+exports._empty = () => {
+  return new Promise((res, rej) => {
+    rej();
   });
 };
