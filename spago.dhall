@@ -11,7 +11,15 @@ When creating a new Spago project, you can use
 to generate this file without the comments in this block.
 -}
 { name = "hby-task"
-, dependencies = [ "console", "control", "effect", "prelude", "psci-support" ]
+, dependencies =
+  [ "console"
+  , "control"
+  , "effect"
+  , "either"
+  , "exceptions"
+  , "prelude"
+  , "psci-support"
+  ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
 }

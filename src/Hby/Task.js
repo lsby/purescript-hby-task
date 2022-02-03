@@ -1,10 +1,28 @@
 // task 其实是一个输入为空的函数里包着一个 promise
 
+// 辅助
+function getError(e) {
+  if (
+    e instanceof Error ||
+    Object.prototype.toString.call(e) === "[object Error]"
+  ) {
+    return e;
+  } else {
+    return new Error(e.toString());
+  }
+}
+
+// 函子-应用函子-单子
 exports._map = (fun) => (task) => {
   return () => task().then(fun);
 };
 exports._apply = (task_fun) => (task) => {
-  return () => task().then(task_fun());
+  return () =>
+    task_fun().then((f) => {
+      return task().then((v) => {
+        return f(v);
+      });
+    });
 };
 exports._pure = (a) => () => {
   return new Promise((res, rej) => {
@@ -12,15 +30,38 @@ exports._pure = (a) => () => {
   });
 };
 exports._bind = (task) => (fun) => {
-  return () => task().then((a) => fun(a)());
+  return () => {
+    return task().then((a) => fun(a)());
+  };
 };
 
+// alt-plus
+exports._alt = (t1) => (t2) => {
+  return () =>
+    new Promise((res, rej) => {
+      t1()
+        .then((a) => res(a))
+        .catch((_) =>
+          t2()
+            .then((a) => res(a))
+            .catch((e) => rej(getError(e)))
+        );
+    });
+};
+exports._empty = () => {
+  return new Promise((res, rej) => {
+    rej(getError("_empty"));
+  });
+};
+
+// 兼容
 exports.liftEffect = (eff) => () => {
   return new Promise((res, rej) => {
     res(eff());
   });
 };
 
+// run
 exports.runTask = (task) => (fun) => () => {
   return task().then((a) => fun(a)());
 };
@@ -28,22 +69,18 @@ exports.runTask_ = (task) => () => {
   task();
 };
 
-exports._mempty = () => {
-  return new Promise((res, rej) => {
-    res();
-  });
+// 错误处理
+exports._throwException = function (e) {
+  return () =>
+    new Promise((res, rej) => {
+      rej(getError(e));
+    });
 };
-
-exports._alt = (t1) => (t2) => () => {
-  return new Promise((res, rej) => {
-    t1()
-      .then((a) => res(a))
-      .catch((_) => t2().then((a) => res(a)));
-  });
-};
-
-exports._empty = () => {
-  return new Promise((res, rej) => {
-    rej();
-  });
+exports._catchException = (l) => (r) => (task) => {
+  return () =>
+    new Promise((res, rej) => {
+      task()
+        .then((a) => res(r(a)))
+        .catch((e) => res(l(getError(e))));
+    });
 };

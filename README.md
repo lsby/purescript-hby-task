@@ -10,7 +10,7 @@ in  upstream
       , repo =
           "https://github.com/lsby/purescript-hby-task"
       , version =
-          "v0.0.2"
+          "v0.0.3"
       }
 ```
 
