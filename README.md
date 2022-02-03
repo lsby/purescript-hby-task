@@ -6,7 +6,14 @@
 in  upstream
   with hby-task =
       { dependencies =
-          [ "console", "effect", "prelude", "psci-support" ]
+            [ "console"
+            , "control"
+            , "effect"
+            , "either"
+            , "exceptions"
+            , "prelude"
+            , "psci-support"
+            ]
       , repo =
           "https://github.com/lsby/purescript-hby-task"
       , version =
