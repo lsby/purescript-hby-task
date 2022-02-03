@@ -74,16 +74,16 @@ test_try_alt1 = do
   a <- try $ throw "err" <|> empty
   case a of
     Left x -> case message x of
-      "_empty" -> liftEffect $ log "ok-test_try_alt"
-      _ -> liftEffect $ log "err-test_try_alt"
-    Right _ -> liftEffect $ log "err-test_try_alt"
+      "_empty" -> liftEffect $ log "ok-test_try_alt1"
+      _ -> liftEffect $ log "err-test_try_alt1"
+    Right _ -> liftEffect $ log "err-test_try_alt1"
 
 test_try_alt2 :: Task Unit
 test_try_alt2 = do
   a <- try $ pure "ok" <|> pure "err"
   case a of
-    Left _ -> liftEffect $ log "err-test_try_alt"
-    Right s -> liftEffect $ log $ s <> "-test_try_alt"
+    Left _ -> liftEffect $ log "err-test_try_alt2"
+    Right s -> liftEffect $ log $ s <> "-test_try_alt2"
 
 main :: Effect Unit
 main =
