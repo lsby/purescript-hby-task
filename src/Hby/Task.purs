@@ -1,4 +1,11 @@
-module Hby.Task where
+module Hby.Task
+  ( Task
+  , runTask
+  , runTask_
+  , liftEffect
+  , throw
+  , try
+  ) where
 
 import Prelude
 import Control.Alt (class Alt)
