@@ -8,6 +8,8 @@ import Effect (Effect)
 import Effect.Console (log)
 import Effect.Exception (message)
 import Hby.Task (Task, liftEffect, runTask, runTask_, throw, try)
+import OhYes (generateTS)
+import Type.Proxy (Proxy(..))
 
 test_runTask :: Effect Unit
 test_runTask = runTask (pure "ok-test_runTask") (\a -> log a)
@@ -85,6 +87,16 @@ test_try_alt2 = do
     Left _ -> liftEffect $ log "err-test_try_alt2"
     Right s -> liftEffect $ log $ s <> "-test_try_alt2"
 
+type Test
+  = Task String
+
+test_generateTS :: Task Unit
+test_generateTS = do
+  liftEffect
+    $ log case eq (generateTS "test" (Proxy :: Proxy Test)) ("export type test = () => Promise<string>") of
+        true -> "ok-test_generateTS"
+        false -> "err-test_generateTS"
+
 main :: Effect Unit
 main =
   runTask_ do
@@ -108,3 +120,5 @@ main =
     test_try
     test_try_alt1
     test_try_alt2
+    -- 允许生成ts类型
+    test_generateTS

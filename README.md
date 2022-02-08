@@ -11,13 +11,15 @@ in  upstream
             , "effect"
             , "either"
             , "exceptions"
+            , "has-js-rep"
+            , "ohyes"
             , "prelude"
             , "psci-support"
             ]
       , repo =
           "https://github.com/lsby/purescript-hby-task"
       , version =
-          "v0.0.5"
+          "v0.0.6"
       }
 ```
 

@@ -13,6 +13,9 @@ import Control.Plus (class Plus)
 import Data.Either (Either(..))
 import Effect (Effect)
 import Effect.Exception (Error, error)
+import HasJSRep (class HasJSRep)
+import OhYes (class HasTSRep, toTSRep)
+import Type.Proxy (Proxy(..))
 
 -------------------------
 -- 数据类型
@@ -94,3 +97,8 @@ instance taskAlt :: Alt Task where
 instance taskPlus :: Plus Task where
   empty :: forall a. Task a
   empty = _empty
+
+instance taskHasJSRep :: HasJSRep a => HasJSRep (Task a)
+
+instance taskHasTSRep :: HasTSRep a => HasTSRep (Task a) where
+  toTSRep _ = "() => Promise<" <> toTSRep ((Proxy :: Proxy a)) <> ">"
