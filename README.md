@@ -19,7 +19,7 @@ in  upstream
       , repo =
           "https://github.com/lsby/purescript-hby-task"
       , version =
-          "v0.0.6"
+          "v0.0.7"
       }
   with ohyes =
       { dependencies =
