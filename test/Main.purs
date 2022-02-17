@@ -7,7 +7,8 @@ import Data.Either (Either(..))
 import Effect (Effect)
 import Effect.Console (log)
 import Effect.Exception (message)
-import Hby.Task (Task, liftEffect, runTask, runTask_, throw, try)
+import Effect.Timer (setTimeout)
+import Hby.Task (Task, liftEffect, runTask, runTask_, throw, try, mkTask)
 import OhYes (generateTS)
 import Type.Proxy (Proxy(..))
 
@@ -97,12 +98,30 @@ test_generateTS = do
         true -> "ok-test_generateTS"
         false -> "err-test_generateTS"
 
+test_mkTask1 :: Task Unit
+test_mkTask1 =
+  mkTask \res _ -> do
+    _ <-
+      setTimeout 1000 do
+        log "ok-test_mkTask1"
+        res unit
+    pure unit
+
+test_mkTask2 :: Task Unit
+test_mkTask2 =
+  mkTask \res _ -> do
+    log "ok-test_mkTask2"
+    res unit
+
 main :: Effect Unit
 main =
   runTask_ do
     -- run
     liftEffect $ test_runTask
     liftEffect $ test_liftEffect_runTask_
+    -- mk
+    test_mkTask1
+    test_mkTask2
     -- Functor-Apply-Applicative-Bind
     test_map
     test_apply

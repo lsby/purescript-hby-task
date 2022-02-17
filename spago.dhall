@@ -18,6 +18,7 @@ to generate this file without the comments in this block.
   , "either"
   , "exceptions"
   , "has-js-rep"
+  , "js-timers"
   , "ohyes"
   , "prelude"
   , "psci-support"

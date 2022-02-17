@@ -5,6 +5,7 @@ module Hby.Task
   , liftEffect
   , throw
   , try
+  , mkTask
   ) where
 
 import Prelude
@@ -53,6 +54,8 @@ foreign import runTask :: forall a. Task a -> (a -> Effect Unit) -> Effect Unit
 foreign import runTask_ :: forall a. Task a -> Effect Unit
 
 foreign import liftEffect :: forall a. Effect a -> Task a
+
+foreign import mkTask :: forall a. ((a -> Effect Unit) -> (String -> Effect Unit) -> Effect Unit) -> Task a
 
 throw :: forall a. String -> Task a
 throw = _throwException <<< error

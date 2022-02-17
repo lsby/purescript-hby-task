@@ -84,3 +84,10 @@ exports._catchException = (l) => (r) => (task) => {
         .catch((e) => res(l(getError(e))));
     });
 };
+
+// mkTask :: forall a. ((a -> Effect Unit) -> (String -> Effect Unit) -> Effect Unit) -> Task a
+exports.mkTask = (f) => () => {
+  return new Promise((res, rej) => {
+    f((a) => () => res(a))((a) => () => rej(a))();
+  });
+};
