@@ -15,6 +15,8 @@ import Type.Proxy (Proxy(..))
 -------------------------
 foreign import data Task :: Type -> Type
 
+foreign import data Promise :: Type
+
 -------------------------
 -- js 映射
 -------------------------
@@ -49,7 +51,7 @@ foreign import liftEffect :: forall a. Effect a -> Task a
 
 foreign import mkTask :: forall a. ((a -> Effect Unit) -> (String -> Effect Unit) -> Effect Unit) -> Task a
 
-foreign import unsafeRunTask :: forall a. Task a -> Unit
+foreign import unsafeRunTask :: forall a. Task a -> Promise
 
 throw :: forall a. String -> Task a
 throw = _throwException <<< error
