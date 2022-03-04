@@ -5,6 +5,7 @@ import Control.Alt (class Alt)
 import Control.Plus (class Plus)
 import Data.Either (Either(..))
 import Effect (Effect)
+import Effect.Console (log) as E
 import Effect.Exception (Error, error)
 import HasJSRep (class HasJSRep)
 import OhYes (class HasTSRep, toTSRep)
@@ -58,6 +59,9 @@ throw = _throwException <<< error
 
 try :: forall a. Task a -> Task (Either Error a)
 try action = _catchException Left Right action
+
+log :: String -> Task Unit
+log s = liftEffect $ E.log s
 
 -------------------------
 -- 类型类实现
