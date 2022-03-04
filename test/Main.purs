@@ -113,7 +113,7 @@ test_mkTask2 =
     log "ok-test_mkTask2"
     res unit
 
-test_unsafeRunTask :: Task Unit
+test_unsafeRunTask :: Unit
 test_unsafeRunTask = unsafeRunTask $ liftEffect $ log ("ok-test_unsafeRunTask")
 
 main :: Effect Unit
@@ -126,7 +126,7 @@ main =
     test_mkTask1
     test_mkTask2
     -- unsafeRunTask
-    test_unsafeRunTask
+    pure $ test_unsafeRunTask
     -- Functor-Apply-Applicative-Bind
     test_map
     test_apply

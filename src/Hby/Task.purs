@@ -49,7 +49,7 @@ foreign import liftEffect :: forall a. Effect a -> Task a
 
 foreign import mkTask :: forall a. ((a -> Effect Unit) -> (String -> Effect Unit) -> Effect Unit) -> Task a
 
-foreign import unsafeRunTask :: forall a. Task a -> Task Unit
+foreign import unsafeRunTask :: forall a. Task a -> Unit
 
 throw :: forall a. String -> Task a
 throw = _throwException <<< error
