@@ -99,65 +99,9 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.5-20211116/packages.dhall sha256:7ba810597a275e43c83411d2ab0d4b3c54d0b551436f4b1632e9ff3eb62e327a
+          https://github.com/purescript/package-sets/releases/download/psc-0.14.5-20211116/packages.dhall
+            sha256:7ba810597a275e43c83411d2ab0d4b3c54d0b551436f4b1632e9ff3eb62e327a
+      /\  https://github.com/lsby/purescript-my-upstream/releases/download/1646335462/packages.dhall
+            sha256:3aaf7efa28e5d13c9f80da1fa1300b05253445b06b6396f29d2f10427a30ffcc
 
 in  upstream
-  with ohyes =
-      { dependencies =
-            [ "aff"
-            , "effect"
-            , "foldable-traversable"
-            , "functions"
-            , "has-js-rep"
-            , "lists"
-            , "node-buffer"
-            , "node-fs"
-            , "nullable"
-            , "prelude"
-            , "prettier"
-            , "psci-support"
-            , "spec"
-            , "typelevel-prelude"
-            , "variant"
-            ]
-      , repo =
-          "https://github.com/lsby/purescript-ohyes"
-      , version =
-          "ls-v1.0.0"
-      }
-  with has-js-rep =
-      { dependencies =
-            [ "aff-promise"
-            , "arrays"
-            , "console"
-            , "effect"
-            , "foldable-traversable"
-            , "foreign-object"
-            , "functions"
-            , "nullable"
-            , "prelude"
-            , "psci-support"
-            , "record-format"
-            , "strings"
-            , "typelevel-prelude"
-            , "variant"
-            ]
-      , repo =
-          "https://github.com/lsby/purescript-has-js-rep"
-      , version =
-          "ls-v1.0.0"
-      }
-  with record-format =
-      { dependencies =
-            [ "assert"
-            , "effect"
-            , "prelude"
-            , "psci-support"
-            , "record"
-            , "typelevel-prelude"
-            ]
-      , repo =
-          "https://github.com/lsby/purescript-record-format"
-      , version =
-          "ls-v1.0.0"
-      }

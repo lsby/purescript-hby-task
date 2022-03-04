@@ -21,7 +21,6 @@ to generate this file without the comments in this block.
   , "js-timers"
   , "ohyes"
   , "prelude"
-  , "psci-support"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]

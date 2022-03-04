@@ -8,7 +8,7 @@ import Effect (Effect)
 import Effect.Console (log)
 import Effect.Exception (message)
 import Effect.Timer (setTimeout)
-import Hby.Task (Task, liftEffect, runTask, runTask_, throw, try, mkTask)
+import Hby.Task (Task, liftEffect, mkTask, runTask, runTask_, throw, try, unsafeRunTask)
 import OhYes (generateTS)
 import Type.Proxy (Proxy(..))
 
@@ -113,6 +113,9 @@ test_mkTask2 =
     log "ok-test_mkTask2"
     res unit
 
+test_unsafeRunTask :: Task Unit
+test_unsafeRunTask = unsafeRunTask $ liftEffect $ log ("ok-test_unsafeRunTask")
+
 main :: Effect Unit
 main =
   runTask_ do
@@ -122,6 +125,8 @@ main =
     -- mk
     test_mkTask1
     test_mkTask2
+    -- unsafeRunTask
+    test_unsafeRunTask
     -- Functor-Apply-Applicative-Bind
     test_map
     test_apply

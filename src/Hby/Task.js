@@ -91,3 +91,10 @@ exports.mkTask = (f) => () => {
     f((a) => () => res(a))((a) => () => rej(a))();
   });
 };
+
+// unsafeRunTask :: forall a. Task a -> Task Unit
+exports.unsafeRunTask = (t) => () => {
+  return new Promise((res, rej) => {
+    t().then(res());
+  });
+};

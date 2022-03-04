@@ -1,12 +1,4 @@
-module Hby.Task
-  ( Task
-  , runTask
-  , runTask_
-  , liftEffect
-  , throw
-  , try
-  , mkTask
-  ) where
+module Hby.Task where
 
 import Prelude
 import Control.Alt (class Alt)
@@ -56,6 +48,8 @@ foreign import runTask_ :: forall a. Task a -> Effect Unit
 foreign import liftEffect :: forall a. Effect a -> Task a
 
 foreign import mkTask :: forall a. ((a -> Effect Unit) -> (String -> Effect Unit) -> Effect Unit) -> Task a
+
+foreign import unsafeRunTask :: forall a. Task a -> Task Unit
 
 throw :: forall a. String -> Task a
 throw = _throwException <<< error
