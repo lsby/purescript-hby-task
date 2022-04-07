@@ -5,6 +5,7 @@ import Control.Alt (class Alt)
 import Control.Plus (class Plus)
 import Data.Either (Either(..))
 import Effect (Effect)
+import Effect.Aff (Aff, message, runAff)
 import Effect.Console (log) as E
 import Effect.Exception (Error, error)
 import HasJSRep (class HasJSRep)
@@ -62,6 +63,18 @@ try action = _catchException Left Right action
 
 log :: String -> Task Unit
 log s = liftEffect $ E.log s
+
+aff2task :: forall a. Aff a -> Task a
+aff2task aff =
+  mkTask \res rej -> do
+    _ <-
+      runAff
+        ( \e -> case e of
+            Left err -> rej $ message err
+            Right d -> res d
+        )
+        aff
+    pure unit
 
 -------------------------
 -- 类型类实现

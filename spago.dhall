@@ -12,13 +12,15 @@ to generate this file without the comments in this block.
 -}
 { name = "hby-task"
 , dependencies =
-  [ "console"
+  [ "aff"
+  , "console"
   , "control"
   , "effect"
   , "either"
   , "exceptions"
   , "has-js-rep"
   , "js-timers"
+  , "maybe"
   , "ohyes"
   , "prelude"
   ]

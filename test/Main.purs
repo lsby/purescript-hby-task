@@ -5,10 +5,11 @@ import Control.Alt ((<|>))
 import Control.MonadPlus (empty)
 import Data.Either (Either(..))
 import Effect (Effect)
+import Effect.Aff (Milliseconds(..), delay, error, makeAff, nonCanceler)
 import Effect.Console (log) as E
 import Effect.Exception (message)
 import Effect.Timer (setTimeout)
-import Hby.Task (Promise, Task, liftEffect, mkTask, runTask, runTask_, throw, try, unsafeRunTask, log)
+import Hby.Task (Promise, Task, aff2task, liftEffect, log, mkTask, runTask, runTask_, throw, try, unsafeRunTask)
 import OhYes (generateTS)
 import Type.Proxy (Proxy(..))
 
@@ -102,7 +103,7 @@ test_mkTask1 :: Task Unit
 test_mkTask1 =
   mkTask \res _ -> do
     _ <-
-      setTimeout 1000 do
+      setTimeout 100 do
         E.log "ok-test_mkTask1"
         res unit
     pure unit
@@ -119,6 +120,39 @@ test_unsafeRunTask = unsafeRunTask $ liftEffect $ E.log ("ok-test_unsafeRunTask"
 test_log :: Task Unit
 test_log = log ("ok-test_log")
 
+test_aff2task1 :: Task Unit
+test_aff2task1 = do
+  aff2task (delay $ Milliseconds 100.0)
+  log ("ok-test_aff2task")
+
+test_aff2task2 :: Task Unit
+test_aff2task2 = do
+  aff <-
+    pure
+      $ makeAff
+          ( \cb -> do
+              cb $ Right "abc"
+              pure nonCanceler
+          )
+  x <- aff2task aff
+  case x of
+    "abc" -> log ("ok-test_aff2task2")
+    _ -> throw "err"
+
+test_aff2task3 :: Task Unit
+test_aff2task3 = do
+  aff <-
+    pure
+      $ makeAff
+          ( \cb -> do
+              cb $ Left (error "afferr")
+              pure nonCanceler
+          )
+  x <- try $ aff2task aff
+  case x of
+    Left err -> if message err == "afferr" then log ("ok-test_aff2task3") else throw "err"
+    _ -> throw "err"
+
 main :: Effect Unit
 main =
   runTask_ do
@@ -132,6 +166,10 @@ main =
     _ <- pure $ test_unsafeRunTask
     -- log
     test_log
+    -- test_aff2task
+    test_aff2task1
+    test_aff2task2
+    test_aff2task3
     -- Functor-Apply-Applicative-Bind
     test_map
     test_apply
