@@ -96,3 +96,8 @@ exports.mkTask = (f) => () => {
 exports.unsafeRunTask = (t) => {
   t();
 };
+
+// lazy :: forall a b. (a -> Task b) -> (a -> Task b)
+exports.lazy = (f) => (a) => {
+  return () => f(a)()
+}

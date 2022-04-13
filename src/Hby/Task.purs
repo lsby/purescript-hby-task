@@ -55,6 +55,8 @@ foreign import mkTask :: forall a. ((a -> Effect Unit) -> (String -> Effect Unit
 
 foreign import unsafeRunTask :: forall a. Task a -> Promise
 
+foreign import lazy :: forall a b. (a -> Task b) -> (a -> Task b)
+
 throw :: forall a. String -> Task a
 throw = _throwException <<< error
 
