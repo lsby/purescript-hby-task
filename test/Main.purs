@@ -1,7 +1,6 @@
 module Test.Main where
 
 import Prelude
-
 import Control.Alt ((<|>))
 import Control.MonadPlus (empty)
 import Data.Either (Either(..))
