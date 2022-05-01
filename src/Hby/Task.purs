@@ -1,7 +1,6 @@
 module Hby.Task where
 
 import Prelude
-
 import Control.Alt (class Alt)
 import Control.Plus (class Plus)
 import Data.Either (Either(..))
