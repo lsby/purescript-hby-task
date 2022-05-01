@@ -1,15 +1,17 @@
 module Test.Main where
 
 import Prelude
+
 import Control.Alt ((<|>))
 import Control.MonadPlus (empty)
 import Data.Either (Either(..))
 import Effect (Effect)
 import Effect.Aff (Milliseconds(..), delay, error, makeAff, nonCanceler)
+import Effect.Class (liftEffect)
 import Effect.Console (log) as E
 import Effect.Exception (message)
 import Effect.Timer (setTimeout)
-import Hby.Task (Promise, Task, aff2task, liftEffect, log, mkTask, runTask, runTask_, throw, try, unsafeRunTask)
+import Hby.Task (Promise, Task, aff2task, log, mkTask, runTask, runTask_, throw, try, unsafeRunTask)
 import OhYes (generateTS)
 import Type.Proxy (Proxy(..))
 

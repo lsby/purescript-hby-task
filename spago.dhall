@@ -20,7 +20,6 @@ to generate this file without the comments in this block.
   , "exceptions"
   , "has-js-rep"
   , "js-timers"
-  , "maybe"
   , "ohyes"
   , "prelude"
   ]

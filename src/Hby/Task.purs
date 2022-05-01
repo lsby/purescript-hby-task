@@ -1,11 +1,13 @@
 module Hby.Task where
 
 import Prelude
+
 import Control.Alt (class Alt)
 import Control.Plus (class Plus)
 import Data.Either (Either(..))
 import Effect (Effect)
 import Effect.Aff (Aff, message, runAff)
+import Effect.Class (class MonadEffect)
 import Effect.Console (log) as E
 import Effect.Exception (Error, error)
 import HasJSRep (class HasJSRep)
@@ -49,7 +51,7 @@ foreign import runTask :: forall a. Task a -> (a -> Effect Unit) -> Effect Unit
 
 foreign import runTask_ :: forall a. Task a -> Effect Unit
 
-foreign import liftEffect :: forall a. Effect a -> Task a
+foreign import _liftEffect :: forall a. Effect a -> Task a
 
 foreign import mkTask :: forall a. ((a -> Effect Unit) -> (String -> Effect Unit) -> Effect Unit) -> Task a
 
@@ -64,7 +66,7 @@ try :: forall a. Task a -> Task (Either Error a)
 try action = _catchException Left Right action
 
 log :: String -> Task Unit
-log s = liftEffect $ E.log s
+log s = _liftEffect $ E.log s
 
 aff2task :: forall a. Aff a -> Task a
 aff2task aff =
@@ -96,6 +98,11 @@ instance taskApplicative :: Applicative Task where
 instance taskBind :: Bind Task where
   bind :: forall a b. Task a -> (a -> Task b) -> Task b
   bind = _bind
+
+instance taskMonad :: Monad Task
+
+instance MonadEffect Task where
+  liftEffect = _liftEffect
 
 instance taskSemigroup :: Semigroup a => Semigroup (Task a) where
   append :: Task a -> Task a -> Task a

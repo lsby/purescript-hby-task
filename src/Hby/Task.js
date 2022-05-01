@@ -55,7 +55,7 @@ exports._empty = () => {
 };
 
 // 兼容
-exports.liftEffect = (eff) => () => {
+exports._liftEffect = (eff) => () => {
   return new Promise((res, rej) => {
     res(eff());
   });
