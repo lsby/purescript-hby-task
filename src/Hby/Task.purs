@@ -5,7 +5,7 @@ import Control.Alt (class Alt)
 import Control.Plus (class Plus)
 import Data.Either (Either(..))
 import Effect (Effect)
-import Effect.Aff (Aff, message, runAff)
+import Effect.Aff (Aff, makeAff, message, runAff)
 import Effect.Class (class MonadEffect)
 import Effect.Console (log) as E
 import Effect.Exception (Error, error)
@@ -78,6 +78,14 @@ aff2task aff =
         )
         aff
     pure unit
+
+task2aff :: forall a. Task a -> Aff a
+task2aff task =
+  makeAff
+    ( \f -> do
+        runTask (try task) (\x -> f x)
+        mempty
+    )
 
 -------------------------
 -- 类型类实现
